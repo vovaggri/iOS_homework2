@@ -18,7 +18,7 @@ class WishMakerViewController: UIViewController {
         static let blue: String = "Blue"
         
         static let stackRadius: CGFloat = 20
-        static let stackBottom: CGFloat = -40
+        static let stackBottom: CGFloat = -20
         static let stackLeading: CGFloat = 20
         
         static let titleFont: CGFloat = 32
@@ -30,16 +30,23 @@ class WishMakerViewController: UIViewController {
         static let descriptionFont: CGFloat = 18
         static let descriptionLeading: CGFloat = 20
         static let descriptionTop: CGFloat = 20
-        static let buttonTop: CGFloat = -40
+        static let toggleButtonTop: CGFloat = -40
         
         static let alpha: CGFloat = 1.0
         
         static let fatalError: String = "init(coder:) has not been implemented"
+        
+        static let addWishButtonHeight: CGFloat = 50
+        static let addWishButtonBottom: CGFloat = 10
+        static let addWishButtonSide: CGFloat = 20
+        static let addWishButtonText: String = "My wishes"
+        static let addWishButtonRaduis: CGFloat = 20
     }
     
     private let interactor: BusinessLogic
     private var stackView: UIStackView?
     private var toggleButton: UIButton?
+    private let addWishButton: UIButton = UIButton(type: .system)
     
     required init?(interactor: BusinessLogic) {
         self.interactor = interactor
@@ -59,6 +66,7 @@ class WishMakerViewController: UIViewController {
 
     private func configureUI() {
         configureTitle()
+        configureAddWishButton()
         configureSliders()
     }
     
@@ -70,6 +78,7 @@ class WishMakerViewController: UIViewController {
         
     }
     
+    // MARK: - Configure a text part
     private func configureTitle() {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +111,7 @@ class WishMakerViewController: UIViewController {
         ])
     }
     
+    // MARK: - Make a stack of sliders with toggleButton
     private func configureSliders() {
         let stack = UIStackView();
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -131,14 +141,11 @@ class WishMakerViewController: UIViewController {
         NSLayoutConstraint.activate([
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.stackLeading),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.stackBottom),
+            stack.bottomAnchor.constraint(equalTo: addWishButton.topAnchor, constant: Constants.stackBottom),
             
             toggleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            toggleButton.topAnchor.constraint(equalTo: stack.topAnchor, constant: Constants.buttonTop)
+            toggleButton.topAnchor.constraint(equalTo: stack.topAnchor, constant: Constants.toggleButtonTop)
         ])
-    
-        stack.pinBottom(to: view, -1 * Constants.stackBottom)
-        stack.pinHorizontal(to: view, Constants.stackLeading)
         
         sliderRed.valueChanged = { [weak self] value in
             guard let self = self else {return}
@@ -170,6 +177,31 @@ class WishMakerViewController: UIViewController {
         
         stack.isHidden.toggle()
         button.setTitle(stack.isHidden ? "Show sliders" : "Hide sliders", for: .normal)
+    }
+    
+    // MARK: - Make AddWishButton
+    private func configureAddWishButton() {
+        view.addSubview(addWishButton)
+        addWishButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addWishButton.heightAnchor.constraint(equalToConstant: Constants.addWishButtonHeight),
+            addWishButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.addWishButtonSide),
+            addWishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.addWishButtonSide),
+            addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.addWishButtonBottom)
+        ])
+        
+        addWishButton.backgroundColor = .white
+        addWishButton.setTitleColor(.systemPink, for: .normal)
+        addWishButton.setTitle(Constants.addWishButtonText, for: .normal)
+        
+        addWishButton.layer.cornerRadius = Constants.addWishButtonRaduis
+        addWishButton.addTarget(self, action: #selector(addWishButtonPressed), for: .touchUpInside)
+        
+        view.layoutIfNeeded()
+    }
+    
+    @objc private func addWishButtonPressed() {
+        present(WishStoringViewController(), animated: true)
     }
 }
 
