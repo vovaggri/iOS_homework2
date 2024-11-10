@@ -93,6 +93,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         static let textHeight: CGFloat = 60
         
         static let addWishButtonTitle: String = "Add wish"
+        static let fatalError: String = "init(coder:) has not been implemented"
         static let addWishButtonCornerRadius: CGFloat = 10
         static let addWishButtonTop: CGFloat = 10
         static let addWishButtonBottom: CGFloat = -5
@@ -132,7 +133,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(Constants.fatalError)
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
