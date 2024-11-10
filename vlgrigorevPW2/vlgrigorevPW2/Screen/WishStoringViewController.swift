@@ -275,7 +275,7 @@ extension WishStoringViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 1 else { return }
         
-        let alert = UIAlertController(title: "Delete a wish", message: "Are you sure, that you want delete this wish", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Delete a wish", message: "Are you sure, that you want delete this wish?", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
