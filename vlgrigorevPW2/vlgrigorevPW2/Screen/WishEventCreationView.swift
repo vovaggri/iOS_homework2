@@ -30,6 +30,10 @@ final class WishEventCreationView: UIViewController {
         static let buttonHeight: CGFloat = 50
         static let buttonWidth: CGFloat = 150
         static let buttonRadius: CGFloat = 20
+        
+        static let alertTitle: String = "Ошибка"
+        static let alertActionString: String = "OK"
+        static let alertMessage: String = "Дата окончания должна быть позже даты начала."
     }
     
     // MARK: - Variables
@@ -148,8 +152,8 @@ final class WishEventCreationView: UIViewController {
     }
     
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(title: Constants.alertTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.alertActionString, style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
@@ -162,7 +166,7 @@ final class WishEventCreationView: UIViewController {
         
         // Проверка корректности дат
         if startDateRoulette.date >= endDateRoulette.date {
-            showAlert(message: "Дата окончания должна быть позже даты начала.")
+            showAlert(message: Constants.alertMessage)
             return
         }
         
