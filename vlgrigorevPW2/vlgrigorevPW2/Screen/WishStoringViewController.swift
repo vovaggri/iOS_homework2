@@ -1,6 +1,7 @@
 import UIKit
 
 final class WishStoringViewController: UIViewController, UITextViewDelegate {
+    // MARK: - Enum
     enum Constants {
         static let numnerOfRows: Int = 10
         static let tableOffset: Double = 60
@@ -17,15 +18,17 @@ final class WishStoringViewController: UIViewController, UITextViewDelegate {
         static let wishesKey: String = "savedWishes"
     }
 
-    
+    // MARK: - Variables
+    var backgroundColor: UIColor?
     private let table: UITableView = UITableView(frame: .zero)
-    @objc private let dismissButton: UIButton = UIButton(type: .system)
     private let defaults = UserDefaults.standard
     private var wishArray: [String] = []
+    @objc private let dismissButton: UIButton = UIButton(type: .system)
     
+    // MARK: - Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        view.backgroundColor = backgroundColor ?? .systemYellow
         loadUserSavedWishes()
         configureTable()
         configureDismissButton()
@@ -33,6 +36,7 @@ final class WishStoringViewController: UIViewController, UITextViewDelegate {
         table.delegate = self
     }
     
+    // MARK: - Private functions
     private func saveUserWishes() {
         defaults.set(wishArray, forKey: Constants.wishesKey)
     }
@@ -73,6 +77,7 @@ final class WishStoringViewController: UIViewController, UITextViewDelegate {
         dismissButton.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
     }
     
+    // MARK: - Objc functions
     @objc private func dismissButtonPressed() {
         dismiss(animated: true)
     }
@@ -80,9 +85,7 @@ final class WishStoringViewController: UIViewController, UITextViewDelegate {
 
 // MARK: - AddWishCell
 class AddWishCell: UITableViewCell, UITextViewDelegate {
-    
-    static let reuseId: String = "AddWishCell"
-    
+    // MARK: - Enum
     enum Constants {
         static let textBorderWidth: CGFloat = 1
         static let textCornerRadius: CGFloat = 10
@@ -100,6 +103,9 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         static let addWishButtonHeight: CGFloat = 25
         static let addWishButtonWidth: CGFloat = 100
     }
+    
+    // MARK: - Variables
+    static let reuseId: String = "AddWishCell"
     
     private let wishText: UITextView = {
         let textView = UITextView()
@@ -124,6 +130,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     
     var addWish: ((String) -> Void)?
     
+    // MARK: - Lyfecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String? ) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .red
@@ -136,6 +143,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         fatalError(Constants.fatalError)
     }
     
+    // MARK: - Functions
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .white {
             textView.text = nil
@@ -150,6 +158,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
+    // MARK: - Private functions
     private func configureUI() {
         configureWishText()
         configureAddWishButton()
@@ -184,6 +193,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         addWishButton.addTarget(self, action: #selector(addWishButtonPressed(_:)), for: .touchUpInside)
     }
     
+    // MARK: - Objc functions
     @objc private func addWishButtonPressed(_ sender: UIButton) {
         let wishTextView = wishText.text
         if let text = wishTextView, !text.isEmpty, text != Constants.text {
@@ -198,9 +208,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
 
 // MARK: - WrittenWishCell
 final class WrittenWishCell: UITableViewCell {
-    static let resuId: String = "WrittenWishCell"
-    private let wishLabel: UILabel = UILabel()
-    
+    // MARK: - Enum
     private enum Constants {
         static let wrapColor: UIColor = .white
         static let wrapRadius: CGFloat = 16
@@ -210,7 +218,12 @@ final class WrittenWishCell: UITableViewCell {
         
         static let fatalError: String = "init(coder:) has not been implemented"
     }
+    
+    // MARK: - Variables
+    static let resuId: String = "WrittenWishCell"
+    private let wishLabel: UILabel = UILabel()
 
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -221,10 +234,12 @@ final class WrittenWishCell: UITableViewCell {
         fatalError(Constants.fatalError)
     }
     
+    // MARK: - Functions
     func configure(with wish: String) {
         wishLabel.text = wish
     }
     
+    // MARK: - Private functions
     private func configureUI() {
         selectionStyle = .none
         backgroundColor = .clear
